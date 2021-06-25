@@ -3,6 +3,9 @@ const app = express();
 const morgan = require("morgan");
 const bodyParser = require("body-parser");
 const { db } = require("./models");
+const wikiRouter = require('./routes/wiki');
+
+// app.use('/users', usersRouter);
 
 // db.authenticate().then(() => {
 //   console.log("connected to the database");
@@ -19,6 +22,13 @@ app.get("/", async (req, res, next) => {
     console.log("Something is wrong");
   }
 });
+
+app.use('/wiki', wikiRouter);
+
+async function init() {
+  await db.sync({force: true});
+  await db.close(); }
+init ();
 
 const PORT = 3000;
 
